@@ -1,0 +1,71 @@
+打开文件
+open()函数：这是 Python 中用于打开文件的基本函数。它接受两个主要参数，文件名（可以包含路径）和模式。例如：file = open("example.txt", "r")，这里"example.txt"是文件名，"r"是模式，表示以只读方式打开文件。
+文件模式：
+r（只读）：用于读取文件内容。如果文件不存在，会抛出FileNotFoundError异常。例如：file = open("readme.txt", "r")。
+w（只写）：用于写入文件内容。如果文件存在，会先清空文件内容再写入；如果文件不存在，则会创建一个新文件。例如：file = open("new_file.txt", "w")。
+a（追加）：用于在文件末尾追加内容。如果文件不存在，会创建一个新文件。例如：file = open("log.txt", "a")。
+r +（读写）：可以同时进行读取和写入操作。文件指针初始位置在文件开头。例如：file = open("data.txt", "r +")。
+w +（读写）：功能类似于w模式，不过同时支持读取操作。先清空文件内容，再进行读写。例如：file = open("edit_file.txt", "w +")。
+a +（读写）：功能类似于a模式，不过同时支持读取操作。文件指针初始位置在文件末尾，用于追加和读取。例如：file = open("combined.txt", "a +")。
+b（二进制模式）：可以和其他模式（如rb、wb、ab）组合使用，用于处理二进制文件，像图片、音频等文件类型。例如：file = open("image.jpg", "rb")。
+读取文件内容
+read()方法：用于读取文件的全部内容。例如：
+python
+复制
+file = open("example.txt", "r")
+content = file.read()
+print(content)
+file.close()
+它会一次性读取文件中的所有字符，并返回一个字符串。如果文件很大，可能会占用大量内存。
+readline()方法：每次读取文件的一行内容。例如：
+python
+复制
+file = open("poem.txt", "r")
+line1 = file.readline()
+print(line1)
+file.close()
+常用于逐行处理文件内容，返回的是一个包含换行符的字符串。
+readlines()方法：读取文件的所有行，并返回一个包含所有行内容的列表。例如：
+python
+复制
+file = open("config.txt", "r")
+lines = file.readlines()
+for line in lines:
+    print(line)
+file.close()
+写入文件内容
+write()方法：用于向文件写入内容。例如：
+python
+复制
+file = open("new_text.txt", "w")
+file.write("This is a new text file.")
+file.close()
+它接受一个字符串作为参数，并将其写入文件。如果是在w模式下，会覆盖原有的内容；在a模式下，会追加到文件末尾。
+writelines()方法：接受一个字符串序列（如列表）作为参数，将序列中的每个字符串写入文件。例如：
+python
+复制
+lines = ["Line 1\n", "Line 2\n"]
+file = open("multi_lines.txt", "w")
+file.writelines(lines)
+file.close()
+关闭文件
+close()方法：在完成文件的读写操作后，应该使用close()方法关闭文件。这是一个良好的编程习惯，可以释放系统资源，避免文件损坏等问题。例如：file.close()。
+with语句：一种更安全、更简洁的文件管理方式。with语句会自动处理文件的关闭操作，即使在代码块中出现异常也能保证文件正确关闭。例如：
+python
+复制
+with open("safe_file.txt", "r") as file:
+    content = file.read()
+    print(content)
+文件指针操作（可选）
+文件指针用于记录文件当前的读写位置。可以使用seek()方法来移动文件指针。例如：
+file.seek(0)：将文件指针移动到文件开头。
+file.seek(len(file.read()))：将文件指针移动到文件末尾。
+也可以指定相对位置来移动文件指针，如file.seek(n, 1)，其中n是偏移量，1表示从当前位置开始偏移。这种操作在随机读写文件时比较有用。
+处理文件相关异常
+在文件读写过程中，可能会遇到各种异常，如FileNotFoundError（文件不存在）、PermissionError（没有权限访问文件）等。可以使用try - except语句来捕获和处理这些异常。例如：
+python
+复制
+try:
+    file = open("nonexistent_file.txt", "r")
+except FileNotFoundError:
+    print("文件不存在。")
